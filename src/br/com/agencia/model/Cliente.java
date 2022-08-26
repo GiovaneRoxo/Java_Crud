@@ -6,10 +6,28 @@ public class Cliente {
 
 	private int id;
 	private String nome;
+	private String nome_meio;
+	private String nome_final;
 	private int idade;
 	private Date dataCadastro;
 	private String usuario;
 	private String senha;
+
+	public String getNomeFinal() {
+		return nome_final;
+	}
+
+	public void setNomeFinal(String nome_final) {
+		this.nome_final = nome_final;
+	}
+
+	public String getNomeMeio() {
+		return nome_meio;
+	}
+
+	public void setNomeMeio(String nome_meio) {
+		this.nome_meio = nome_meio;
+	}
 
 	public String getUsuario() {
 		return usuario;
@@ -19,7 +37,7 @@ public class Cliente {
 		this.usuario = usuario;
 	}
 
-	public String senha() {
+	public String getSenha() {
 		return senha;
 	}
 

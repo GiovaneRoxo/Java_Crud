@@ -13,150 +13,154 @@ import br.com.agencia.model.Cliente;
 public class ClienteDAO {
 	
 	public static void save(Cliente cliente ) {
-		
-		String sql = "INSERT INTO clientes(nome, idade, datacadastro, usuario, senha) VALUES (?, ?, ?, ?, ?)";
-		
-		Connection conn = null;
-		PreparedStatement pstm = null;
-		
-		
-		try {
-			//cria conexão com banco de dados
-			conn = ConnectionFactory.createConnectionToMySQL();
-			pstm = (PreparedStatement) conn.prepareStatement(sql); 
 			
-			pstm.setString(1, cliente.getNome());
-			pstm.setInt(2, cliente.getIdade());
-			pstm.setDate(3, new Date(cliente.getDataCadastro().getTime()));
+			String sql = "INSERT INTO clientes(nome, sobrenome_meio, sobrenome_final, idade, datacadastro, usuario, senha) VALUES (?, ?, ?, ?, ?, ?, ?)";
 			
-			pstm.execute();
-			System.out.println("Contato salvo!!");
-		}catch (Exception e) {
-			e.printStackTrace();
-		}finally {
+			Connection conn = null;
+			PreparedStatement pstm = null;
+			
+			
 			try {
-				if(pstm!=null) {
-					pstm.close();
-				}
-				if(conn!=null) {
-					conn.close();
-				}
+				//cria conexão com banco de dados
+				conn = ConnectionFactory.createConnectionToMySQL();
+				pstm = (PreparedStatement) conn.prepareStatement(sql); 
+				
+				pstm.setString(1, cliente.getNome());
+				pstm.setString(2, cliente.getNomeMeio());
+				pstm.setString(3, cliente.getNomeFinal());
+				pstm.setInt(4, cliente.getIdade());
+				pstm.setDate(5, new Date(cliente.getDataCadastro().getTime()));
+				pstm.setString(6, cliente.getUsuario());
+				pstm.setString(7, cliente.getSenha());
+				
+				pstm.execute();
+				System.out.println("Cadastro efetuado com sucesso!");
 			}catch (Exception e) {
 				e.printStackTrace();
+			}finally {
+				try {
+					if(pstm!=null) {
+						pstm.close();
+					}
+					if(conn!=null) {
+						conn.close();
+					}
+				}catch (Exception e) {
+					e.printStackTrace();
+				}
 			}
 		}
-	}
 
 	public static List<Cliente> getClientes(){
-	
-		String sql = "SELECT * FROM clientes";
 		
-	    List<Cliente> clientes = new ArrayList<Cliente>();
-		
-	    Connection conn = null;
-	    PreparedStatement pstm = null;
-	    //recurperar dados do banco
-	    ResultSet rset = null;
-	    
-	    try {
-	    	conn = ConnectionFactory.createConnectionToMySQL();
-	    	
-	    	pstm = conn.prepareStatement(sql);
-	    
-	    	rset = pstm.executeQuery();
-	    
-	        while(rset.next()) {
-	    	    Cliente cliente = new Cliente();
-	            
-	    	    cliente.setId(rset.getInt("id"));
-	    	    cliente.setNome(rset.getString("nome"));
-	    	    cliente.setIdade(rset.getInt("idade"));
-	    	    cliente.setDataCadastro(rset.getDate("datacadastro"));
-	    	    
-	    	    clientes.add(cliente);
-	        }
-	        
-	    }catch (Exception e) {
-	    	e.printStackTrace();
-	    }finally {
-	    	try {
-		    	if(rset!=null) {
-		    		rset.close();
-		    	}if(pstm!=null) {
-		    		pstm.close();
-		    	}if(conn!=null) {
-		    		conn.close();
-		    	}
-	    	}catch(Exception e) {
-	    		e.printStackTrace();
-	    	}
-	    }
-	    return clientes;
-	}
+			String sql = "SELECT * FROM clientes";
+			
+				List<Cliente> clientes = new ArrayList<Cliente>();
+			
+				Connection conn = null;
+				PreparedStatement pstm = null;
+				//recurperar dados do banco
+				ResultSet rset = null;
+				
+				try {
+					conn = ConnectionFactory.createConnectionToMySQL();
+					
+					pstm = conn.prepareStatement(sql);
+				
+					rset = pstm.executeQuery();
+				
+						while(rset.next()) {
+							Cliente cliente = new Cliente();
+								
+							cliente.setId(rset.getInt("id"));
+							cliente.setNome(rset.getString("nome"));
+							cliente.setIdade(rset.getInt("idade"));
+							cliente.setDataCadastro(rset.getDate("datacadastro"));
+							
+							clientes.add(cliente);
+						}
+						
+				}catch (Exception e) {
+					e.printStackTrace();
+				}finally {
+					try {
+						if(rset!=null) {
+							rset.close();
+						}if(pstm!=null) {
+							pstm.close();
+						}if(conn!=null) {
+							conn.close();
+						}
+					}catch(Exception e) {
+						e.printStackTrace();
+					}
+				}
+				return clientes;
+		}
 
 	public static void update(Cliente cliente) {
-		
-		String sql = "UPDATE `clientes` SET `nome` = ?, `idade` = ?, `datacadastro` = ? "+ 
-		"WHERE (`id` = ?);";
-		
-		Connection conn = null;
-		PreparedStatement pstm = null;
-		
-		try {
-			conn = ConnectionFactory.createConnectionToMySQL();
 			
-			pstm = (PreparedStatement) conn.prepareStatement(sql);
-		
-		    pstm.setString(1, cliente.getNome());
-		    pstm.setInt(2, cliente.getIdade());
-			pstm.setDate(3, new Date(cliente.getDataCadastro().getTime()));
-			pstm.setInt(4, cliente.getId());
+			String sql = "UPDATE `clientes` SET `nome` = ?, `idade` = ?, `datacadastro` = ? "+ 
+			"WHERE (`id` = ?);";
 			
-			pstm.execute();
-		}catch (Exception e) {
-			e.printStackTrace();
-		}finally {
+			Connection conn = null;
+			PreparedStatement pstm = null;
+			
 			try {
-				if(pstm!=null) {
-					pstm.close();
-				}
-				if(conn!=null) {
-					conn.close();
-				}
+				conn = ConnectionFactory.createConnectionToMySQL();
+				
+				pstm = (PreparedStatement) conn.prepareStatement(sql);
+			
+					pstm.setString(1, cliente.getNome());
+					pstm.setInt(2, cliente.getIdade());
+				pstm.setDate(3, new Date(cliente.getDataCadastro().getTime()));
+				pstm.setInt(4, cliente.getId());
+				
+				pstm.execute();
 			}catch (Exception e) {
 				e.printStackTrace();
+			}finally {
+				try {
+					if(pstm!=null) {
+						pstm.close();
+					}
+					if(conn!=null) {
+						conn.close();
+					}
+				}catch (Exception e) {
+					e.printStackTrace();
+				}
 			}
-		}
-	} 
+		} 
 
 	public static void deleteByID(int id) {
-		
-		String sql = "DELETE FROM `agencia`.`clientes` WHERE (`id` = ?);";
-		
-		Connection conn = null;
-		PreparedStatement pstm = null;
-		
-		try {
-			conn = ConnectionFactory.createConnectionToMySQL();
-			pstm = (PreparedStatement) conn.prepareStatement(sql);
 			
-			pstm.setInt(1, id);
+			String sql = "DELETE FROM `agencia`.`clientes` WHERE (`id` = ?);";
 			
-			pstm.execute();
-		}catch (Exception e) {
-			e.printStackTrace();
-		}finally {
+			Connection conn = null;
+			PreparedStatement pstm = null;
+			
 			try {
-				if(pstm!=null) {
-					pstm.close();
-				}if(conn!=null) {
-					conn.close();
-				}
+				conn = ConnectionFactory.createConnectionToMySQL();
+				pstm = (PreparedStatement) conn.prepareStatement(sql);
+				
+				pstm.setInt(1, id);
+				
+				pstm.execute();
 			}catch (Exception e) {
 				e.printStackTrace();
+			}finally {
+				try {
+					if(pstm!=null) {
+						pstm.close();
+					}if(conn!=null) {
+						conn.close();
+					}
+				}catch (Exception e) {
+					e.printStackTrace();
+				}
 			}
 		}
-	}
 
 	public static int lastID(){
 		
@@ -206,5 +210,78 @@ public class ClienteDAO {
 	    return maior;
 	}
 
+	public static String loginUsuario(String usuario){
+
+			Connection conn = null;
+			PreparedStatement pstm = null;
+			ResultSet rset = null;
+			String sql = "SELECT `usuario` FROM agencia.clientes WHERE usuario= ? ;'"+usuario+"'";
+			String resultado = "";
+				
+			try {
+				conn = ConnectionFactory.createConnectionToMySQL();
+					
+				pstm = conn.prepareStatement(sql);		
+				rset = pstm.executeQuery();		
+        resultado = rset.getString("Usuario");
+	
+
+			}catch (Exception e) {
+				e.printStackTrace();
+			}finally {
+				try {
+					if(rset!=null) {
+						rset.close();
+					}if(pstm!=null) {
+					pstm.close();
+					}if(conn!=null) {
+					conn.close();
+					}
+				}
+				catch(Exception e) {
+					e.printStackTrace();
+				}
+			}
+		return resultado;
+	}
+	
+  public static String loginSenha(String senha){
+
+		Connection conn = null;
+		PreparedStatement pstm = null;
+		ResultSet rset = null;
+		String resultado = "false";
+			
+		try {
+			conn = ConnectionFactory.createConnectionToMySQL();
+				
+			pstm = conn.prepareStatement("SELECT `senha` FROM agencia.clientes WHERE senha='?';");
+			
+			pstm.setString(1, senha);
+
+			rset = pstm.executeQuery();
+
+			if(rset.toString() == senha){
+				resultado = "true";
+			}
+
+		}catch (Exception e) {
+			e.printStackTrace();
+		}finally {
+			try {
+				if(rset!=null) {
+					rset.close();
+				}if(pstm!=null) {
+				pstm.close();
+				}if(conn!=null) {
+				conn.close();
+				}
+			}
+			catch(Exception e) {
+				e.printStackTrace();
+			}
+		}
+	return resultado;
+}
 
 }
