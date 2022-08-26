@@ -8,7 +8,7 @@ import br.com.agencia.model.Cliente;
 
 public class Main {
 
-	public static void main(String[] args) {
+	public static void main(String[] args){
 
 		Scanner ler = new Scanner(System.in);
 		int opc;
@@ -31,18 +31,18 @@ public class Main {
 			  System.out.println("------------------------");
 			  System.out.println("---------LOGIN----------");
 			  System.out.println("------------------------");
-			  System.out.println("Digite o nome de usuario: ");
+			  System.out.println("Digite o usuario: ");
 			  String usuario = ler.next();
 				System.out.println("Digite a senha: ");
 				String senha = ler.next();
-			  if(senha == "123" && usuario == "admin"){
-
+			  String login = ClienteDAO.login(usuario, senha);
+			  if(login != usuario) {
 				  while(sair == true) {
 						System.out.println("------------------------");
 						System.out.println("------BEM-VINDO(A)------");
 						System.out.println("------------------------");
 						System.out.println("1 - Listar aeroportos");
-						System.out.println("2 - Compara passagens");
+						System.out.println("2 - Comprar passagens");
 						System.out.println("3 - Alterar senha");
 						System.out.println("4 - Sair");
 						opcc = ler.nextInt();
@@ -60,7 +60,7 @@ public class Main {
 						}
 					}
 				}else{
-					System.out.println(ClienteDAO.loginUsuario(usuario));
+					System.out.println("Usuario ou senha invalidos");
 				}
 				break;
 

@@ -34,7 +34,7 @@ public class ClienteDAO {
 				pstm.setString(7, cliente.getSenha());
 				
 				pstm.execute();
-				System.out.println("Cadastro efetuado com sucesso!");
+				System.out.println("Contato salvo!!");
 			}catch (Exception e) {
 				e.printStackTrace();
 			}finally {
@@ -210,21 +210,22 @@ public class ClienteDAO {
 	    return maior;
 	}
 
-	public static String loginUsuario(String usuario){
+	public static String login(String login, String senha) {
 
 			Connection conn = null;
 			PreparedStatement pstm = null;
 			ResultSet rset = null;
-			String sql = "SELECT `usuario` FROM agencia.clientes WHERE usuario= ? ;'"+usuario+"'";
 			String resultado = "";
-				
+
+
 			try {
 				conn = ConnectionFactory.createConnectionToMySQL();
 					
-				pstm = conn.prepareStatement(sql);		
-				rset = pstm.executeQuery();		
-        resultado = rset.getString("Usuario");
-	
+				pstm = conn.prepareStatement("SELECT usuario FROM agencia.clientes WHERE Usuario ='?' and Senha ='?' ;");	
+				pstm.setString(1, login);
+				pstm.setString(2, senha);	
+				rset = pstm.executeQuery();
+				resultado = rset.getString("usuario");
 
 			}catch (Exception e) {
 				e.printStackTrace();
@@ -242,46 +243,10 @@ public class ClienteDAO {
 					e.printStackTrace();
 				}
 			}
-		return resultado;
-	}
-	
-  public static String loginSenha(String senha){
-
-		Connection conn = null;
-		PreparedStatement pstm = null;
-		ResultSet rset = null;
-		String resultado = "false";
-			
-		try {
-			conn = ConnectionFactory.createConnectionToMySQL();
-				
-			pstm = conn.prepareStatement("SELECT `senha` FROM agencia.clientes WHERE senha='?';");
-			
-			pstm.setString(1, senha);
-
-			rset = pstm.executeQuery();
-
-			if(rset.toString() == senha){
-				resultado = "true";
-			}
-
-		}catch (Exception e) {
-			e.printStackTrace();
-		}finally {
-			try {
-				if(rset!=null) {
-					rset.close();
-				}if(pstm!=null) {
-				pstm.close();
-				}if(conn!=null) {
-				conn.close();
-				}
-			}
-			catch(Exception e) {
-				e.printStackTrace();
-			}
+		if(resultado.equals("")) {
+			return "false";
+		}	else {
+			return resultado;
 		}
-	return resultado;
-}
-
+	}
 }
