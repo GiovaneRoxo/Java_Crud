@@ -36,7 +36,7 @@ public class Main {
 				System.out.println("Digite a senha: ");
 				String senha = ler.next();
 			  String login = ClienteDAO.login(usuario, senha);
-			  if(login != usuario) {
+			  if(login != null) {
 				  while(sair == true) {
 						System.out.println("------------------------");
 						System.out.println("------BEM-VINDO(A)------");
@@ -66,23 +66,23 @@ public class Main {
 
 		  case 2:
 			  System.out.println("------------------------");
-			  System.out.println("---------CADASTRO--------");
+			  System.out.println("---------CADASTRO-------");
 			  System.out.println("------------------------");
-			  System.out.println("Digite o nome (sem espaço): ");
+			  System.out.println("Digite o seu nome (sem espaço): ");
 				Cliente cliente = new Cliente();
 			  String nome = ler.next();
 				cliente.setNome(nome);
-				System.out.println("Digite o nome do meio (sem espaço): ");
+				System.out.println("Digite o seu nome do meio (sem espaço): ");
 				String nome_meio = ler.next();
 				cliente.setNomeMeio(nome_meio);
-				System.out.println("Digite o nome final (sem espaço): ");
+				System.out.println("Digite o seu ultimo nome (sem espaço): ");
 				String nome_final = ler.next();
 				cliente.setNomeFinal(nome_final);
 				cliente.setDataCadastro(new Date());
-				System.out.println("Digite o usuario: ");
+				System.out.println("Digite o seu nome de usuario: ");
 			  String usuarioCadastro = ler.next();
 				cliente.setUsuario(usuarioCadastro);
-				System.out.println("Digite a senha: ");
+				System.out.println("Digite a sua senha: ");
 			  String senhaCadastro = ler.next();
 				cliente.setSenha(senhaCadastro);
         ClienteDAO.save(cliente);

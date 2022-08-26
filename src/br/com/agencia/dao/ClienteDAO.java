@@ -215,20 +215,24 @@ public class ClienteDAO {
 			Connection conn = null;
 			PreparedStatement pstm = null;
 			ResultSet rset = null;
-			String resultado = "";
-
+			
 
 			try {
 				conn = ConnectionFactory.createConnectionToMySQL();
-					
-				pstm = conn.prepareStatement("SELECT usuario FROM agencia.clientes WHERE Usuario ='?' and Senha ='?' ;");	
+
+				String sql = "SELECT Usuario FROM agencia.clientes WHERE Usuario = ? AND Senha = ? ;";
+
+				pstm = conn.prepareStatement(sql);	
 				pstm.setString(1, login);
 				pstm.setString(2, senha);	
-				rset = pstm.executeQuery();
-				resultado = rset.getString("usuario");
+				rset = pstm.executeQuery();		
+				return rset.next() ? rset.getString("Usuario") : null;
+
+				
 
 			}catch (Exception e) {
 				e.printStackTrace();
+				return null;
 			}finally {
 				try {
 					if(rset!=null) {
@@ -243,10 +247,5 @@ public class ClienteDAO {
 					e.printStackTrace();
 				}
 			}
-		if(resultado.equals("")) {
-			return "false";
-		}	else {
-			return resultado;
-		}
 	}
 }
