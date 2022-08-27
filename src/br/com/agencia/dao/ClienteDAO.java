@@ -228,8 +228,6 @@ public class ClienteDAO {
 				rset = pstm.executeQuery();		
 				return rset.next() ? rset.getString("Usuario") : null;
 
-				
-
 			}catch (Exception e) {
 				e.printStackTrace();
 				return null;
