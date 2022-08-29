@@ -16,7 +16,6 @@ public class Main {
 		boolean loop = true;
 		boolean sair = true;
 
-
 		while(loop == true) {
 		System.out.println("------------------------");
 		System.out.println("---------AGENCIA--------");
@@ -46,14 +45,21 @@ public class Main {
 						System.out.println("3 - Alterar senha");
 						System.out.println("4 - Sair");
 						opcc = ler.nextInt();
-
 						switch(opcc) {
 							case 1:
 
 							case 2:
 
 							case 3:
-
+								System.out.println("------------------------");
+								System.out.println("---------SENHA----------");
+								System.out.println("------------------------");
+								System.out.println("Digite a antiga senha: ");
+								String antiga = ler.next();
+								System.out.println("Digite a nova senha: ");
+								String novaSenha = ler.next();
+								ClienteDAO.updateSenha(novaSenha, antiga);
+								break;
 							case 4:
 							  sair = false;
 								break;
@@ -83,14 +89,22 @@ public class Main {
 				String nome_final = ler.next();
 				cliente.setNomeFinal(nome_final);
 				cliente.setDataCadastro(new Date());
-				System.out.println("Digite o seu nome de usuario: ");
-			  String usuarioCadastro = ler.next();
-				cliente.setUsuario(usuarioCadastro);
+				boolean loop2 = true;
+				while(loop2 == true) {
+					System.out.println("Digite o seu nome de usuario: ");
+					String usuarioCadastro = ler.next();
+					if(ClienteDAO.validaUsuarios(usuarioCadastro) == true){
+						System.out.println("Usuario ja existe, digite outro");
+					}else{
+						cliente.setUsuario(usuarioCadastro);
+						loop2 = false;
+					}
+				}
 				System.out.println("Digite a sua senha: ");
-			  String senhaCadastro = ler.next();
+				String senhaCadastro = ler.next();
 				cliente.setSenha(senhaCadastro);
-        ClienteDAO.save(cliente);
-			break;		
+				ClienteDAO.save(cliente);
+				break;
 			case 3:
 			  loop = false;
 				break;	   

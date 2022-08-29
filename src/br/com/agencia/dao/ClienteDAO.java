@@ -98,10 +98,9 @@ public class ClienteDAO {
 				return clientes;
 		}
 
-	public static void update(Cliente cliente) {
+	public static void updateSenha(String novaSenha, String antigaSenha) {
 			
-			String sql = "UPDATE `clientes` SET `nome` = ?, `idade` = ?, `datacadastro` = ? "+ 
-			"WHERE (`id` = ?);";
+			String sql = "UPDATE clientes SET Senha = ? WHERE Senha = ? ;";
 			
 			Connection conn = null;
 			PreparedStatement pstm = null;
@@ -111,14 +110,14 @@ public class ClienteDAO {
 				
 				pstm = (PreparedStatement) conn.prepareStatement(sql);
 			
-					pstm.setString(1, cliente.getNome());
-					pstm.setInt(2, cliente.getIdade());
-				pstm.setDate(3, new Date(cliente.getDataCadastro().getTime()));
-				pstm.setInt(4, cliente.getId());
-				
+				pstm.setString(1, novaSenha);			
+				pstm.setString(2, antigaSenha);
 				pstm.execute();
+				System.out.println("Senha atualizada!!");
+
 			}catch (Exception e) {
 				e.printStackTrace();
+				System.out.println("Erro ao atualizar senha!!");
 			}finally {
 				try {
 					if(pstm!=null) {
@@ -162,54 +161,6 @@ public class ClienteDAO {
 			}
 		}
 
-	public static int lastID(){
-		
-		String sql = "SELECT `id` FROM agencia.clientes;";
-		
-	    List<Cliente> list = new ArrayList<Cliente>();
-		
-	    Connection conn = null;
-	    PreparedStatement pstm = null;
-	    //recurperar dados do banco
-	    ResultSet rset = null;
-	    int maior = Integer.MIN_VALUE;
-	    
-	    try {
-	    	conn = ConnectionFactory.createConnectionToMySQL();
-	    	
-	    	pstm = conn.prepareStatement(sql);
-	    
-	    	rset = pstm.executeQuery();
-	    
-	        while(rset.next()) {
-	    	    Cliente x = new Cliente();       
-	    	    x.setId(rset.getInt("id"));  
-	    	    list.add(x);
-	    	    for (int i = 0; i < rset.getInt("id"); i++) {
-	    	        if (rset.getInt("id") > maior) {
-	    	            maior = rset.getInt("id");
-	    	        }
-	    	    }
-	        }
-	        
-	    }catch (Exception e) {
-	    	e.printStackTrace();
-	    }finally {
-	    	try {
-		    	if(rset!=null) {
-		    		rset.close();
-		    	}if(pstm!=null) {
-		    		pstm.close();
-		    	}if(conn!=null) {
-		    		conn.close();
-		    	}
-	    	}catch(Exception e) {
-	    		e.printStackTrace();
-	    	}
-	    }
-	    return maior;
-	}
-
 	public static String login(String login, String senha) {
 
 			Connection conn = null;
@@ -246,4 +197,48 @@ public class ClienteDAO {
 				}
 			}
 	}
+
+	public static Boolean validaUsuarios(String usuario) {
+		
+		Connection conn = null;
+		PreparedStatement pstm = null;
+		ResultSet rset = null;
+		Boolean returno = false;
+		
+
+		try {
+			conn = ConnectionFactory.createConnectionToMySQL();
+
+			String sql = "SELECT Usuario FROM agencia.clientes WHERE Usuario = ? ;";
+
+			pstm = conn.prepareStatement(sql);	
+			pstm.setString(1, usuario);
+			rset = pstm.executeQuery();		
+
+			if(rset.next()) {
+				if(rset.getString("Usuario").equals(usuario)) {
+					returno = true;
+				}
+			}
+					
+			}catch (Exception e) {
+				e.printStackTrace();
+			}finally {
+				try {
+					if(rset!=null) {
+						rset.close();
+					}if(pstm!=null) {
+						pstm.close();
+					}if(conn!=null) {
+						conn.close();
+					}
+				}catch(Exception e) {
+					e.printStackTrace();
+				}
+			}
+			return returno;
+	}
+
+
 }
+
