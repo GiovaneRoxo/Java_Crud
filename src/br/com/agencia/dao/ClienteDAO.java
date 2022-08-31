@@ -12,6 +12,7 @@ import br.com.agencia.model.Cliente;
 
 public class ClienteDAO {
 	
+// METODOS DO CLIENTE
 		// metodo para cadastrar cliente C
 	public static void save(Cliente cliente ) {
 		
@@ -76,9 +77,12 @@ public class ClienteDAO {
 								
 							cliente.setId(rset.getInt("cliente_id"));
 							cliente.setNome(rset.getString("nome"));
+							cliente.setNomeMeio(rset.getString("sobrenome_meio"));
+							cliente.setNomeFinal(rset.getString("sobrenome_final"));
 							cliente.setIdade(rset.getInt("idade"));
 							cliente.setDataCadastro(rset.getDate("datacadastro"));
-							
+							cliente.setUsuario(rset.getString("usuario"));
+
 							clientes.add(cliente);
 						}
 						
@@ -99,7 +103,7 @@ public class ClienteDAO {
 				}
 				return clientes;
 		}
-		// metodo para atualizar senha do cliente 
+		// metodo para deletar o cliente pela id 
 	public static void deleteByID(int id) {
 			
 			String sql = "DELETE FROM `agencia`.`clientes` WHERE (`cliente_id` = ?);";
@@ -129,7 +133,7 @@ public class ClienteDAO {
 				}
 			}
 		}
-		// metodo para autenticar cliente  
+		// metodo para autenticar cliente na tela de login
 	public static String login(String login, String senha) {
 
 			Connection conn = null;
@@ -166,7 +170,7 @@ public class ClienteDAO {
 				}
 			}
 	}
-		// metodo para verificar se o usuario ja existe
+		// metodo para verificar se o usuario ja existe durante o cadastro
 	public static Boolean validaUsuarios(String usuario) {
 		
 		Connection conn = null;
@@ -207,7 +211,7 @@ public class ClienteDAO {
 			}
 			return returno;
 	}
-		// metodo para verificar se a senha ja existe
+		// metodo para verificar se a senha ja existe durante o cadastro 
 	public static Boolean validaSenha(String senha) {
 		
 		Connection conn = null;
@@ -286,7 +290,7 @@ public class ClienteDAO {
 			}
 			return id;
 	}
-		// metodo para atualizar nome de usuario
+		// metodo para atualizar nome de usuario do cliente
 	public static void updateUsuario(String usuario, int id) {
 
 		Connection conn = null;
@@ -320,7 +324,7 @@ public class ClienteDAO {
 				}
 			}
 	}
-		// metodo para atualizar senha
+		// metodo para atualizar senha do cliente
 	public static void updateSenha(String novaSenha, String antigaSenha) {
 			
 			String sql = "UPDATE clientes SET Senha = ? WHERE Senha = ? ;";
@@ -354,7 +358,7 @@ public class ClienteDAO {
 				}
 			}
 		} 
-		// metodo para atualizar nome
+		// metodo para atualizar nome do cliente
 	public static void updateNome(String nome, int id) {
 		
 		String sql = "UPDATE agencia.clientes SET Nome = ? WHERE CLIENTE_ID = ? ;";
@@ -388,7 +392,7 @@ public class ClienteDAO {
 			}
 		}
 	}
-		// metodo para atualizar sobrenome do meio
+		// metodo para atualizar sobrenome do meio do cliente
 	public static void updateSobrenome(String sobrenome_meio, String sobrenome_final, int id) {
 
 		String sql = "UPDATE agencia.clientes SET Sobrenome_meio = ? AND Sobrenome_final = ? WHERE CLIENTE_ID = ? ;";
@@ -424,7 +428,7 @@ public class ClienteDAO {
 		}
 
 	}
-		// metodo para atualizar ultimo sobrenome 
+		// metodo para atualizar ultimo sobrenome do cliente
 	public static void updateIdade(int idade, int id) {
 		
 		String sql = "UPDATE agencia.clientes SET Idade = ? WHERE CLIENTE_ID = ? ;";
@@ -458,5 +462,5 @@ public class ClienteDAO {
 			}
 		}
 	}
-}
+	}
 

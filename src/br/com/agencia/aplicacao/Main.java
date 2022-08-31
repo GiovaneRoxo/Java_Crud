@@ -3,6 +3,7 @@ package br.com.agencia.aplicacao;
 import java.util.Date;
 import java.util.Scanner;
 
+import br.com.agencia.dao.AdmDAO;
 import br.com.agencia.dao.ClienteDAO;
 import br.com.agencia.model.Cliente;
 
@@ -22,7 +23,8 @@ public class Main {
 		System.out.println("------------------------");
 		System.out.println("1 - L O G I N");
 		System.out.println("2 - C A D A S T R A R");
-		System.out.println("3 - S A I R");
+		System.out.println("3 - A D M I N I S T R A D O R");
+		System.out.println("4 - S A I R");
 		opc = ler.nextInt();
 		
 		switch(opc) {
@@ -197,8 +199,26 @@ public class Main {
 					ClienteDAO.save(cliente);
 				break;
 			case 3:
-				  loop = false;
-				break;	   
+					System.out.println("Digite o seu usuario: ");
+					String user = ler.next();
+					System.out.println("Digite a sua senha: ");
+					String pass = ler.next();
+					if(AdmDAO.validarAdmin(user, pass) == true){
+						for(Cliente c : ClienteDAO.getClientes()) {
+							System.out.println("--------------------------------------------");
+							System.out.println("--------------------------------------------");
+							System.out.println("nome: " + c.getNome() + ' ' + c.getNomeMeio() + ' ' + c.getNomeFinal());
+							System.out.println("idade: " + c.getIdade());
+							System.out.println("data de cadastro: " + c.getDataCadastro());
+							System.out.println("usuario: " + c.getUsuario());
+						}
+					}else{
+						System.out.println("Usuario ou senha invalidos");
+					}
+				break;
+		  case 4:
+					loop = false;
+				break;   
 	  }
 	}ler.close();
 }	       
