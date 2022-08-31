@@ -74,7 +74,7 @@ public class ClienteDAO {
 						while(rset.next()) {
 							Cliente cliente = new Cliente();
 								
-							cliente.setId(rset.getInt("id"));
+							cliente.setId(rset.getInt("cliente_id"));
 							cliente.setNome(rset.getString("nome"));
 							cliente.setIdade(rset.getInt("idade"));
 							cliente.setDataCadastro(rset.getDate("datacadastro"));
@@ -389,9 +389,9 @@ public class ClienteDAO {
 		}
 	}
 		// metodo para atualizar sobrenome do meio
-	public static void updateSobrenome(String sobrenome, int id) {
+	public static void updateSobrenome(String sobrenome_meio, String sobrenome_final, int id) {
 
-		String sql = "UPDATE agencia.clientes SET Sobrenome_meio = ? WHERE CLIENTE_ID = ? ;";
+		String sql = "UPDATE agencia.clientes SET Sobrenome_meio = ? AND Sobrenome_final = ? WHERE CLIENTE_ID = ? ;";
 		
 		Connection conn = null;
 		PreparedStatement pstm = null;
@@ -401,8 +401,9 @@ public class ClienteDAO {
 			
 			pstm = (PreparedStatement) conn.prepareStatement(sql);
 		
-			pstm.setString(1, sobrenome);			
-			pstm.setInt(2, id);
+			pstm.setString(1, sobrenome_meio);			
+			pstm.setString(2, sobrenome_final);
+			pstm.setInt(3, id);
 			pstm.execute();
 			System.out.println("Sobrenome do meio atualizado!!");
 
@@ -424,5 +425,38 @@ public class ClienteDAO {
 
 	}
 		// metodo para atualizar ultimo sobrenome 
+	public static void updateIdade(int idade, int id) {
+		
+		String sql = "UPDATE agencia.clientes SET Idade = ? WHERE CLIENTE_ID = ? ;";
+		
+		Connection conn = null;
+		PreparedStatement pstm = null;
+		
+		try {
+			conn = ConnectionFactory.createConnectionToMySQL();
+			
+			pstm = (PreparedStatement) conn.prepareStatement(sql);
+		
+			pstm.setInt(1, idade);			
+			pstm.setInt(2, id);
+			pstm.execute();
+			System.out.println("Idade atualizada!!");
+
+		}catch (Exception e) {
+			e.printStackTrace();
+			System.out.println("Erro ao atualizar idade!!");
+		}finally {
+			try {
+				if(pstm!=null) {
+					pstm.close();
+				}
+				if(conn!=null) {
+					conn.close();
+				}
+			}catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+	}
 }
 
