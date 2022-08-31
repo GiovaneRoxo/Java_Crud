@@ -40,7 +40,7 @@ public class Main {
 							System.out.println("------------------------");
 							System.out.println("------BEM-VINDO(A)------");
 							System.out.println("------------------------");
-							System.out.println("1 - Listar aeroportos");
+							System.out.println("1 - Listar passagens");
 							System.out.println("2 - Comprar passagens");
 							System.out.println("3 - Deletar conta");
 							System.out.println("4 - Alterar dados");
