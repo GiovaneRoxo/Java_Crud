@@ -43,7 +43,8 @@ public class Main {
 						System.out.println("1 - Listar aeroportos");
 						System.out.println("2 - Comprar passagens");
 						System.out.println("3 - Alterar senha");
-						System.out.println("4 - Sair");
+						System.out.println("4 - Deletar conta");
+						System.out.println("5 - Sair");
 						opcc = ler.nextInt();
 						switch(opcc) {
 							case 1:
@@ -61,6 +62,19 @@ public class Main {
 								ClienteDAO.updateSenha(novaSenha, antiga);
 								break;
 							case 4:
+								System.out.println("------------------------");
+								System.out.println("---------DELETAR---------");
+								System.out.println("------------------------");
+								System.out.println("Digite a senha: ");
+								String senhaTest = ler.next();
+								if(ClienteDAO.validaSenha(senhaTest) == true){
+									ClienteDAO.deleteByID(ClienteDAO.getIdByUsuario(usuario));
+									sair = false;
+								}else{
+									System.out.println("Senha incorreta");
+								}
+								break;
+							case 5:
 							  sair = false;
 								break;
 						}
@@ -78,9 +92,13 @@ public class Main {
 				Cliente cliente = new Cliente();
 			  String nome = ler.next();
 				System.out.println("Digite o seu segundo nome (sem espaço): ");
-				System.out.println("-----SE NAO POSSUIR, DIGITE ENTER-----");
+				System.out.println("-----SE NAO POSSUIR, DIGITE n E DEPOIS ENTER-----");
 				String segundo_nome = ler.next();
-				nome = nome + " " + segundo_nome;
+				if(segundo_nome.equals("n")) {
+					segundo_nome = null;
+				}else{
+					nome = nome + " " + segundo_nome;
+				}
 				cliente.setNome(nome);
 				System.out.println("Digite o seu sobrenome do meio (sem espaço): ");
 				String nome_meio = ler.next();

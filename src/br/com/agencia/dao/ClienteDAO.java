@@ -12,7 +12,9 @@ import br.com.agencia.model.Cliente;
 
 public class ClienteDAO {
 	
+		// metodo para cadastrar cliente C
 	public static void save(Cliente cliente ) {
+		
 			
 			String sql = "INSERT INTO clientes(nome, sobrenome_meio, sobrenome_final, idade, datacadastro, usuario, senha) VALUES (?, ?, ?, ?, ?, ?, ?)";
 			
@@ -50,7 +52,7 @@ public class ClienteDAO {
 				}
 			}
 		}
-
+		// metodo para listar todos os clientes 
 	public static List<Cliente> getClientes(){
 		
 			String sql = "SELECT * FROM clientes";
@@ -97,7 +99,7 @@ public class ClienteDAO {
 				}
 				return clientes;
 		}
-
+		// metodo para atualizar senha do cliente 
 	public static void updateSenha(String novaSenha, String antigaSenha) {
 			
 			String sql = "UPDATE clientes SET Senha = ? WHERE Senha = ? ;";
@@ -131,10 +133,10 @@ public class ClienteDAO {
 				}
 			}
 		} 
-
+		// metodo para deletar cliente pela id  
 	public static void deleteByID(int id) {
 			
-			String sql = "DELETE FROM `agencia`.`clientes` WHERE (`id` = ?);";
+			String sql = "DELETE FROM `agencia`.`clientes` WHERE (`cliente_id` = ?);";
 			
 			Connection conn = null;
 			PreparedStatement pstm = null;
@@ -146,6 +148,7 @@ public class ClienteDAO {
 				pstm.setInt(1, id);
 				
 				pstm.execute();
+				System.out.println("Conta deletada com sucesso!!");
 			}catch (Exception e) {
 				e.printStackTrace();
 			}finally {
@@ -160,7 +163,7 @@ public class ClienteDAO {
 				}
 			}
 		}
-
+		// metodo para autenticar cliente  
 	public static String login(String login, String senha) {
 
 			Connection conn = null;
@@ -197,7 +200,7 @@ public class ClienteDAO {
 				}
 			}
 	}
-
+		// metodo para verificar se o usuario ja existe
 	public static Boolean validaUsuarios(String usuario) {
 		
 		Connection conn = null;
@@ -238,7 +241,84 @@ public class ClienteDAO {
 			}
 			return returno;
 	}
+		// metodo para verificar se a senha ja existe
+	public static Boolean validaSenha(String senha) {
+		
+		Connection conn = null;
+		PreparedStatement pstm = null;
+		ResultSet rset = null;
+		Boolean returno = false;
+		
 
+		try {
+			conn = ConnectionFactory.createConnectionToMySQL();
 
+			String sql = "SELECT Senha FROM agencia.clientes WHERE Senha = ? ;";
+
+			pstm = conn.prepareStatement(sql);	
+			pstm.setString(1, senha);
+			rset = pstm.executeQuery();		
+
+			if(rset.next()) {
+				if(rset.getString("Senha").equals(senha)) {
+					returno = true;
+				}
+			}
+					
+			}catch (Exception e) {
+				e.printStackTrace();
+			}finally {
+				try {
+					if(rset!=null) {
+						rset.close();
+					}if(pstm!=null) {
+						pstm.close();
+					}if(conn!=null) {
+						conn.close();
+					}
+				}catch(Exception e) {
+					e.printStackTrace();
+				}
+			}
+			return returno;
+	}
+		// metodo para pegar o id do cliente pelo usuario
+	public static int getIdByUsuario(String usuario) {
+	
+		Connection conn = null;
+		PreparedStatement pstm = null;
+		ResultSet rset = null;
+		int id = 0;
+		
+		try {
+			conn = ConnectionFactory.createConnectionToMySQL();
+
+			String sql = "SELECT CLIENTE_ID FROM agencia.clientes WHERE Usuario = ? ;";
+
+			pstm = conn.prepareStatement(sql);	
+			pstm.setString(1, usuario);
+			rset = pstm.executeQuery();		
+			
+			if(rset.next()) {
+				id = rset.getInt("CLIENTE_ID");
+			}
+					
+			}catch (Exception e) {
+				e.printStackTrace();
+			}finally {
+				try {
+					if(rset!=null) {
+						rset.close();
+					}if(pstm!=null) {
+						pstm.close();
+					}if(conn!=null) {
+						conn.close();
+					}
+				}catch(Exception e) {
+					e.printStackTrace();
+				}
+			}
+			return id;
+	}
 }
 
