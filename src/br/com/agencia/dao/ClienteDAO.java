@@ -100,40 +100,6 @@ public class ClienteDAO {
 				return clientes;
 		}
 		// metodo para atualizar senha do cliente 
-	public static void updateSenha(String novaSenha, String antigaSenha) {
-			
-			String sql = "UPDATE clientes SET Senha = ? WHERE Senha = ? ;";
-			
-			Connection conn = null;
-			PreparedStatement pstm = null;
-			
-			try {
-				conn = ConnectionFactory.createConnectionToMySQL();
-				
-				pstm = (PreparedStatement) conn.prepareStatement(sql);
-			
-				pstm.setString(1, novaSenha);			
-				pstm.setString(2, antigaSenha);
-				pstm.execute();
-				System.out.println("Senha atualizada!!");
-
-			}catch (Exception e) {
-				e.printStackTrace();
-				System.out.println("Erro ao atualizar senha!!");
-			}finally {
-				try {
-					if(pstm!=null) {
-						pstm.close();
-					}
-					if(conn!=null) {
-						conn.close();
-					}
-				}catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		} 
-		// metodo para deletar cliente pela id  
 	public static void deleteByID(int id) {
 			
 			String sql = "DELETE FROM `agencia`.`clientes` WHERE (`cliente_id` = ?);";
@@ -320,5 +286,143 @@ public class ClienteDAO {
 			}
 			return id;
 	}
+		// metodo para atualizar nome de usuario
+	public static void updateUsuario(String usuario, int id) {
+
+		Connection conn = null;
+		PreparedStatement pstm = null;
+		ResultSet rset = null;
+		
+		try {
+			conn = ConnectionFactory.createConnectionToMySQL();
+
+			String sql = "UPDATE agencia.clientes SET Usuario = ? WHERE CLIENTE_ID = ? ;";
+
+			pstm = conn.prepareStatement(sql);	
+			pstm.setString(1, usuario);
+			pstm.setInt(2, id);
+			pstm.executeUpdate();		
+			System.out.println("Usuario atualizado com sucesso!");
+
+			}catch (Exception e) {
+				e.printStackTrace();
+			}finally {
+				try {
+					if(rset!=null) {
+						rset.close();
+					}if(pstm!=null) {
+						pstm.close();
+					}if(conn!=null) {
+						conn.close();
+					}
+				}catch(Exception e) {
+					e.printStackTrace();
+				}
+			}
+	}
+		// metodo para atualizar senha
+	public static void updateSenha(String novaSenha, String antigaSenha) {
+			
+			String sql = "UPDATE clientes SET Senha = ? WHERE Senha = ? ;";
+			
+			Connection conn = null;
+			PreparedStatement pstm = null;
+			
+			try {
+				conn = ConnectionFactory.createConnectionToMySQL();
+				
+				pstm = (PreparedStatement) conn.prepareStatement(sql);
+			
+				pstm.setString(1, novaSenha);			
+				pstm.setString(2, antigaSenha);
+				pstm.execute();
+				System.out.println("Senha atualizada!!");
+
+			}catch (Exception e) {
+				e.printStackTrace();
+				System.out.println("Erro ao atualizar senha!!");
+			}finally {
+				try {
+					if(pstm!=null) {
+						pstm.close();
+					}
+					if(conn!=null) {
+						conn.close();
+					}
+				}catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		} 
+		// metodo para atualizar nome
+	public static void updateNome(String nome, int id) {
+		
+		String sql = "UPDATE agencia.clientes SET Nome = ? WHERE CLIENTE_ID = ? ;";
+		
+		Connection conn = null;
+		PreparedStatement pstm = null;
+		
+		try {
+			conn = ConnectionFactory.createConnectionToMySQL();
+			
+			pstm = (PreparedStatement) conn.prepareStatement(sql);
+		
+			pstm.setString(1, nome);			
+			pstm.setInt(2, id);
+			pstm.execute();
+			System.out.println("Nome atualizado!!");
+
+		}catch (Exception e) {
+			e.printStackTrace();
+			System.out.println("Erro ao atualizar nome!!");
+		}finally {
+			try {
+				if(pstm!=null) {
+					pstm.close();
+				}
+				if(conn!=null) {
+					conn.close();
+				}
+			}catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+	}
+		// metodo para atualizar sobrenome do meio
+	public static void updateSobrenome(String sobrenome, int id) {
+
+		String sql = "UPDATE agencia.clientes SET Sobrenome_meio = ? WHERE CLIENTE_ID = ? ;";
+		
+		Connection conn = null;
+		PreparedStatement pstm = null;
+		
+		try {
+			conn = ConnectionFactory.createConnectionToMySQL();
+			
+			pstm = (PreparedStatement) conn.prepareStatement(sql);
+		
+			pstm.setString(1, sobrenome);			
+			pstm.setInt(2, id);
+			pstm.execute();
+			System.out.println("Sobrenome do meio atualizado!!");
+
+		}catch (Exception e) {
+			e.printStackTrace();
+			System.out.println("Erro ao atualizar sobrenome do meio!!");
+		}finally {
+			try {
+				if(pstm!=null) {
+					pstm.close();
+				}
+				if(conn!=null) {
+					conn.close();
+				}
+			}catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+
+	}
+		// metodo para atualizar ultimo sobrenome 
 }
 

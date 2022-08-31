@@ -44,7 +44,8 @@ public class Main {
 						System.out.println("2 - Comprar passagens");
 						System.out.println("3 - Alterar senha");
 						System.out.println("4 - Deletar conta");
-						System.out.println("5 - Sair");
+						System.out.println("5 - Alterar dados");
+						System.out.println("6 - Sair");
 						opcc = ler.nextInt();
 						switch(opcc) {
 							case 1:
@@ -63,7 +64,7 @@ public class Main {
 								break;
 							case 4:
 								System.out.println("------------------------");
-								System.out.println("---------DELETAR---------");
+								System.out.println("---------DELETAR--------");
 								System.out.println("------------------------");
 								System.out.println("Digite a senha: ");
 								String senhaTest = ler.next();
@@ -75,6 +76,39 @@ public class Main {
 								}
 								break;
 							case 5:
+								while(true){
+									System.out.println("------------------------");
+									System.out.println("---------DADOS----------");
+									System.out.println("------------------------");
+									System.out.println("QUAL DADO DESEJA ALTERAR?");
+									System.out.println("1 - Nome");
+									System.out.println("2 - Sobrenome do meio");
+									System.out.println("3 - Ultimo sobrenome");
+									System.out.println("4 - Idade");
+									System.out.println("5 - Usuario");
+									System.out.println("6 - Senha");
+									System.out.println("7 - Sair");
+									opcc = ler.nextInt();
+									switch(opcc) {
+										case 1:
+											
+											break;
+										case 2:
+											
+											break;
+										case 3:
+											
+											break;
+										case 4:
+											
+											break;
+										case 5:
+											
+										  break;
+									}
+								break;
+								}
+							case 6:
 							  sair = false;
 								break;
 						}
@@ -106,6 +140,9 @@ public class Main {
 				System.out.println("Digite o seu ultimo sobrenome (sem espaço): ");
 				String nome_final = ler.next();
 				cliente.setNomeFinal(nome_final);
+				System.out.println("Digite o sua idade (sem espaço): ");
+				int idade = ler.nextInt();
+				cliente.setIdade(idade);
 				cliente.setDataCadastro(new Date());
 				boolean loop2 = true;
 				while(loop2 == true) {
