@@ -65,6 +65,7 @@ public class Main {
 										}
 									break;
 								case 4:
+									int id_atual = ClienteDAO.getIdByUsuario(usuario);
 									System.out.println("------------------------");
 									System.out.println("---------DADOS----------");
 									System.out.println("------------------------");
@@ -83,7 +84,7 @@ public class Main {
 												if(ClienteDAO.validaSenha(senhaTest2) == true){
 													System.out.println("Digite o novo nome: ");
 													String nome = ler.next();
-													ClienteDAO.updateNome(nome, ClienteDAO.getIdByUsuario(usuario));
+													ClienteDAO.updateNome(nome, id_atual);
 												}else{
 													System.out.println("Senha incorreta");
 												}
@@ -96,7 +97,7 @@ public class Main {
 													String nome_meio = ler.next();
 													System.out.println("Digite o seu ultimo sobrenome (sem espaço): ");
 													String nome_final = ler.next();
-													ClienteDAO.updateSobrenome(nome_meio, nome_final, ClienteDAO.getIdByUsuario(usuario));
+													ClienteDAO.updateSobrenome(nome_meio, nome_final, id_atual);
 												}
 											break;
 										case 3:
@@ -105,7 +106,7 @@ public class Main {
 												if(ClienteDAO.validaSenha(senhaTest4) == true){
 													System.out.println("Digite a sua idade: ");
 													int idade = ler.nextInt();
-													ClienteDAO.updateIdade(idade, ClienteDAO.getIdByUsuario(usuario));
+													ClienteDAO.updateIdade(idade, id_atual);
 												}else{
 													System.out.println("Senha incorreta");
 												}
@@ -116,9 +117,11 @@ public class Main {
 												if(ClienteDAO.validaSenha(senhaTest5) == true){
 													System.out.println("Digite o novo usuario: ");
 													String novo_usuario = ler.next();
-													if(ClienteDAO.validaUsuarios(novo_usuario) == true){
-														ClienteDAO.updateUsuario(novo_usuario, ClienteDAO.getIdByUsuario(usuario));
-													}
+													if(ClienteDAO.validaUsuarios(novo_usuario) == false){
+														ClienteDAO.updateUsuario(novo_usuario, id_atual);
+													}else{
+														System.out.println("Usuario indisponivel");
+													}	
 												}else{
 													System.out.println("Senha incorreta");
 												}
