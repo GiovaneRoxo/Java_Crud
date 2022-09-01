@@ -26,9 +26,9 @@ public class PassagemDAO {
       pstm = (PreparedStatement) conn.prepareStatement(sql); 
       
       pstm.setInt(1, passagem.getPassagemId());
-      pstm.setString(2, passagem.getDiaViagem());
-      pstm.setString(3, passagem.getMesViagem());
-      pstm.setString(4, passagem.getAnoViagem());
+      pstm.setInt(2, passagem.getDiaViagem());
+      pstm.setInt(3, passagem.getMesViagem());
+      pstm.setInt(4, passagem.getAnoViagem());
       pstm.setString(5, passagem.getDestino());
       pstm.setString(6, passagem.getOrigem());
       pstm.execute();
@@ -86,9 +86,9 @@ public class PassagemDAO {
     try {
       conn = ConnectionFactory.createConnectionToMySQL();
       pstm = (PreparedStatement) conn.prepareStatement(sql);
-      pstm.setString(1, passagem.getDiaViagem());
-      pstm.setString(2, passagem.getMesViagem());
-      pstm.setString(3, passagem.getAnoViagem());
+      pstm.setInt(1, passagem.getDiaViagem());
+      pstm.setInt(2, passagem.getMesViagem());
+      pstm.setInt(3, passagem.getAnoViagem());
       pstm.setString(4, passagem.getDestino());
       pstm.setString(5, passagem.getOrigem());
       pstm.setInt(6, passagem.getPassagemId());
@@ -128,7 +128,7 @@ public class PassagemDAO {
       while(rset.next()) {
         Passagem passagem = new Passagem();
           
-        passagem.setDataViagem(rset.getString("Dia_viagem"),rset.getString("Mes_viagem"),rset.getString("Ano_viagem"));
+        passagem.setDataViagem(rset.getInt("Dia_viagem"),rset.getInt("Mes_viagem"),rset.getInt("Ano_viagem"));
         passagem.setDestino(rset.getString("Destino"));
         passagem.setOrigem(rset.getString("Origem"));
         passagem.setPassagemId(rset.getInt("passagem_id"));

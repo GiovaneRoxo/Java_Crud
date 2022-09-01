@@ -3,9 +3,9 @@ package br.com.agencia.model;
 public class Passagem {
   
   private int passagem_id;
-  private String dia_viagem;
-  private String mes_viagem;
-  private String ano_viagem;
+  private int dia_viagem;
+  private int mes_viagem;
+  private int ano_viagem;
   private String origem;
   private String destino;
 
@@ -17,19 +17,19 @@ public class Passagem {
     this.passagem_id = passagem_id;
   }
 
-  public String getDiaViagem() {
+  public int getDiaViagem() {
     return dia_viagem;
   }
 
-  public String getMesViagem() {
+  public int getMesViagem() {
     return mes_viagem;
   }
 
-  public String getAnoViagem() {
+  public int getAnoViagem() {
     return ano_viagem;
   }
 
-  public void setDataViagem(String dia_viagem, String mes_viagem, String ano_viagem) {
+  public void setDataViagem(int dia_viagem, int mes_viagem, int ano_viagem) {
     this.dia_viagem = dia_viagem;
     this.mes_viagem = mes_viagem;
     this.ano_viagem = ano_viagem;

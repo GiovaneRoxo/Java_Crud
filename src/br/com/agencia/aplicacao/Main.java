@@ -52,6 +52,9 @@ public class Main {
 							opcc = ler.nextInt();
 							switch(opcc) {
 								case 1:
+										System.out.println("------------------------");
+										System.out.println("-----LISTAR-PASSAGENS---");
+										System.out.println("------------------------");
 										for(Passagem p : PassagemDAO.listarPassagens()) {
 											System.out.println("--------------------------------------------");
 											System.out.println("--------------------------------------------");
@@ -69,15 +72,16 @@ public class Main {
 										System.out.println("-----COMPRAR-PASSAGEM---");
 										System.out.println("------------------------");
 										System.out.println("Digite o dia da viagem: ");
-										String dia_Viagem = ler.next();
+										int dia_Viagem = ler.nextInt();
 										System.out.println("Digite o mes da viagem: ");
-										String mes_Viagem = ler.next();
+										int mes_Viagem = ler.nextInt();
 										System.out.println("Digite o ano da viagem: ");
-										String ano_Viagem = ler.next();
-										System.out.println("Digite a origem: ");
-										String origem = ler.next();
-										System.out.println("Digite o destino: ");
-										String destino = ler.next();
+										int ano_Viagem = ler.nextInt();
+										System.out.println("Digite a origem (Cidade/Estado/País): ");
+										ler.nextLine();
+										String origem = ler.nextLine();
+										System.out.println("Digite o destino (Cidade/Estado/País): ");
+										String destino = ler.nextLine();
 										Passagem passagem = new Passagem();
 										passagem.setDataViagem(dia_Viagem, mes_Viagem, ano_Viagem);
 										passagem.setOrigem(origem);
