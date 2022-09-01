@@ -5,7 +5,9 @@ import java.util.Scanner;
 
 import br.com.agencia.dao.AdmDAO;
 import br.com.agencia.dao.ClienteDAO;
+import br.com.agencia.dao.PassagemDAO;
 import br.com.agencia.model.Cliente;
+import br.com.agencia.model.Passagem;
 
 public class Main {
 
@@ -50,9 +52,38 @@ public class Main {
 							opcc = ler.nextInt();
 							switch(opcc) {
 								case 1:
+										for(Passagem p : PassagemDAO.listarPassagens()) {
+											System.out.println("--------------------------------------------");
+											System.out.println("--------------------------------------------");
+											System.out.println("ID DA PASSAGEM: " + p.getPassagemId());
+											System.out.println("DATA DA VIAGEM: " + p.getDiaViagem() + "/" + p.getMesViagem() + "/" + p.getAnoViagem());
+											System.out.println("ORIGEM: " + p.getOrigem());
+											System.out.println("DESTINO: " + p.getDestino());
+											System.out.println("--------------------------------------------");
+											System.out.println("--------------------------------------------");
+										}
+									break;	
 
 								case 2:
-
+										System.out.println("------------------------");
+										System.out.println("-----COMPRAR-PASSAGEM---");
+										System.out.println("------------------------");
+										System.out.println("Digite o dia da viagem: ");
+										String dia_Viagem = ler.next();
+										System.out.println("Digite o mes da viagem: ");
+										String mes_Viagem = ler.next();
+										System.out.println("Digite o ano da viagem: ");
+										String ano_Viagem = ler.next();
+										System.out.println("Digite a origem: ");
+										String origem = ler.next();
+										System.out.println("Digite o destino: ");
+										String destino = ler.next();
+										Passagem passagem = new Passagem();
+										passagem.setDataViagem(dia_Viagem, mes_Viagem, ano_Viagem);
+										passagem.setOrigem(origem);
+										passagem.setDestino(destino);
+										PassagemDAO.inserir(passagem);
+									break;
 								case 3:
 										System.out.println("------------------------");
 										System.out.println("---------DADOS----------");
@@ -204,13 +235,59 @@ public class Main {
 					System.out.println("Digite a sua senha: ");
 					String pass = ler.next();
 					if(AdmDAO.validarAdmin(user, pass) == true){
-						for(Cliente c : ClienteDAO.getClientes()) {
-							System.out.println("--------------------------------------------");
-							System.out.println("--------------------------------------------");
-							System.out.println("nome: " + c.getNome() + ' ' + c.getNomeMeio() + ' ' + c.getNomeFinal());
-							System.out.println("idade: " + c.getIdade());
-							System.out.println("data de cadastro: " + c.getDataCadastro());
-							System.out.println("usuario: " + c.getUsuario());
+						boolean loop3 = true;
+						while(loop3 == true){
+							System.out.println("------------------------");
+							System.out.println("-----------ADM----------");
+							System.out.println("------------------------");
+							System.out.println("1 - Listar clientes");
+							System.out.println("2 - Cadastrar administrador");
+							System.out.println("3 - Deletar administrador");
+							System.out.println("4 - atualizar senha do administrador");
+							System.out.println("5 - Sair");
+							int opcao2 = ler.nextInt();
+							switch(opcao2){
+								case 1:
+										for(Cliente c : ClienteDAO.getClientes()) {
+											System.out.println("--------------------------------------------");
+											System.out.println("--------------------------------------------");
+											System.out.println("nome: " + c.getNome() + ' ' + c.getNomeMeio() + ' ' + c.getNomeFinal());
+											System.out.println("idade: " + c.getIdade());
+											System.out.println("data de cadastro: " + c.getDataCadastro());
+											System.out.println("usuario: " + c.getUsuario());
+											System.out.println("--------------------------------------------");
+											System.out.println("--------------------------------------------");
+										}
+									break;
+								case 2:
+									System.out.println("Digite o usuario do administrador: ");
+									String usuarioAdm = ler.next();
+									System.out.println("Digite a senha do administrador: ");
+									String senhaAdm = ler.next();
+									AdmDAO.cadastrarAdmin(usuarioAdm, senhaAdm);
+									break;
+								case 3:
+										System.out.println("Digite o usuario do administrador: ");
+										String usuarioAdm2 = ler.next();
+										System.out.println("Digite a senha do administrador: ");
+										String senhaAdm2 = ler.next();
+										if(AdmDAO.validarAdmin(usuarioAdm2, senhaAdm2) == true && usuarioAdm2 == user && senhaAdm2 == pass){
+											AdmDAO.deletarAdmin(senhaAdm2);
+										}else{
+											System.out.println("Usuario ou senha invalidos");
+										}
+									break;
+								case 4:
+									System.out.println("Digite o usuario do administrador: ");
+									String usuarioAdm3 = ler.next();
+									System.out.println("Digite a nova senha: ");
+									String senhaAdm3 = ler.next();
+									AdmDAO.updateSenhaAdm(usuarioAdm3, senhaAdm3);
+									break;
+								case 5:
+										loop3 = false;
+									break;
+							}
 						}
 					}else{
 						System.out.println("Usuario ou senha invalidos");
