@@ -46,20 +46,23 @@ public class Main {
 							System.out.println("------------------------");
 							System.out.println("1 - Listar passagens");
 							System.out.println("2 - Comprar passagens");
-							System.out.println("3 - Deletar conta");
-							System.out.println("4 - Alterar dados");
-							System.out.println("5 - Sair");
+							System.out.println("3 - Alterar passagem");
+							System.out.println("4 - Cancelar passagens");
+							System.out.println("5 - Deletar conta");
+							System.out.println("6 - Alterar dados");
+							System.out.println("7 - Sair");
 							opcc = ler.nextInt();
 							switch(opcc) {
 								case 1:
 										System.out.println("------------------------");
 										System.out.println("-----LISTAR-PASSAGENS---");
 										System.out.println("------------------------");
-										for(Passagem p : PassagemDAO.listarPassagens()) {
+										for(Passagem p : PassagemDAO.listarPassagens(ClienteDAO.getIdByUsuario(usuario))) {
 											System.out.println("--------------------------------------------");
 											System.out.println("--------------------------------------------");
 											System.out.println("ID DA PASSAGEM: " + p.getPassagemId());
 											System.out.println("DATA DA VIAGEM: " + p.getDiaViagem() + "/" + p.getMesViagem() + "/" + p.getAnoViagem());
+											System.out.println("DATA DA COMPRA: " + p.getData_compra());
 											System.out.println("ORIGEM: " + p.getOrigem());
 											System.out.println("DESTINO: " + p.getDestino());
 											System.out.println("--------------------------------------------");
@@ -86,9 +89,52 @@ public class Main {
 										passagem.setDataViagem(dia_Viagem, mes_Viagem, ano_Viagem);
 										passagem.setOrigem(origem);
 										passagem.setDestino(destino);
+										passagem.setCliente_id(ClienteDAO.getIdByUsuario(usuario));
+										passagem.setStatus_compra("Aguardando pagamento");
+										passagem.setData_compra(new Date());
 										PassagemDAO.inserir(passagem);
 									break;
 								case 3:
+										System.out.println("------------------------");
+										System.out.println("-----ALTERAR-PASSAGEM---");
+										System.out.println("------------------------");
+										System.out.println("Digite o dia da viagem: ");
+										int dia_Viagem2 = ler.nextInt();
+										System.out.println("Digite o mes da viagem: ");
+										int mes_Viagem2 = ler.nextInt();
+										System.out.println("Digite o ano da viagem: ");
+										int ano_Viagem2 = ler.nextInt();
+										System.out.println("Digite a origem (Cidade/Estado/País): ");
+										ler.nextLine();
+										String origem2 = ler.nextLine();
+										System.out.println("Digite o destino (Cidade/Estado/País): ");
+										String destino2 = ler.nextLine();
+										Passagem passagem2 = new Passagem();
+										passagem2.setDataViagem(dia_Viagem2, mes_Viagem2, ano_Viagem2);
+										passagem2.setOrigem(origem2);
+										passagem2.setDestino(destino2);
+										passagem2.setCliente_id(ClienteDAO.getIdByUsuario(usuario));
+										passagem2.setStatus_compra("Aguardando pagamento");
+										PassagemDAO.atualizarPassagem(passagem2);
+									break;
+								case 4:
+										System.out.println("------------------------");
+										System.out.println("-----CANCELAR-PASSAGEM--");
+										System.out.println("------------------------");
+										System.out.println("Digite o usuario: ");
+										String user = ler.next();
+										System.out.println("Digite a senha: ");
+										String pass = ler.next();
+										String test = ClienteDAO.login(user, pass);
+										if(test != null) {
+											System.out.println("Digite o id da passagem: ");
+											int id_passagem = ler.nextInt();
+											PassagemDAO.deletarPassagem(id_passagem);
+										}else{
+											System.out.println("Usuario ou senha incorretos!");
+										}
+									break;
+								case 5:
 										System.out.println("------------------------");
 										System.out.println("---------DADOS----------");
 										System.out.println("------------------------");
@@ -101,7 +147,7 @@ public class Main {
 											System.out.println("Senha incorreta");
 										}
 									break;
-								case 4:
+								case 6:
 									int id_atual = ClienteDAO.getIdByUsuario(usuario);
 									System.out.println("------------------------");
 									System.out.println("---------DADOS----------");
@@ -181,7 +227,8 @@ public class Main {
 											break;											
 									}
 									break;
-								case 5:
+								case 7:
+									  loop = false;
 										sair = false;
 									break;
 							}

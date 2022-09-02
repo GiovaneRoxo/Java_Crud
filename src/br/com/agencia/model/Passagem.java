@@ -1,5 +1,7 @@
 package br.com.agencia.model;
 
+import java.util.Date;
+
 public class Passagem {
   
   private int passagem_id;
@@ -8,6 +10,33 @@ public class Passagem {
   private int ano_viagem;
   private String origem;
   private String destino;
+  private String Status_compra;
+  private Date data_compra;
+  private int cliente_id;
+
+  public String getStatus_compra() {
+    return Status_compra;
+  }
+  
+  public void setStatus_compra(String status_compra) {
+    Status_compra = status_compra;
+  }
+
+  public Date getData_compra() {
+    return data_compra;
+  }
+
+  public void setData_compra(Date data_compra) {
+    this.data_compra = data_compra;
+  }
+
+  public int getCliente_id() {
+    return cliente_id;
+  }
+
+  public void setCliente_id(int cliente_id) {
+    this.cliente_id = cliente_id;
+  }
 
   public int getPassagemId() {
     return passagem_id;

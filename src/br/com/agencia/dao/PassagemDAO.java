@@ -1,6 +1,7 @@
 package br.com.agencia.dao;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
@@ -14,7 +15,7 @@ public class PassagemDAO {
     // metodo para inserir uma passagem no banco de dados
   public static void inserir(Passagem passagem) {
 
-    String sql = "INSERT INTO passagem(passagem_id, Dia_viagem, Mes_viagem, Ano_viagem, Destino, Origem) VALUES (?, ?, ?, ?, ?, ?)";
+    String sql = "INSERT INTO passagem(passagem_id, Dia_viagem, Mes_viagem, Ano_viagem, Destino, Origem, Status_compra, Data_compra, cliente_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
 			
     Connection conn = null;
     PreparedStatement pstm = null;
@@ -31,6 +32,9 @@ public class PassagemDAO {
       pstm.setInt(4, passagem.getAnoViagem());
       pstm.setString(5, passagem.getDestino());
       pstm.setString(6, passagem.getOrigem());
+      pstm.setString(7, passagem.getStatus_compra());
+      pstm.setDate(8, new Date(passagem.getData_compra().getTime()));
+      pstm.setInt(9, passagem.getCliente_id());
       pstm.execute();
 
       System.out.println("Passagem comprada com sucesso!");
@@ -110,9 +114,9 @@ public class PassagemDAO {
     }
   }
     // metodo para listar passagens no banco de dados
-  public static List<Passagem> listarPassagens(){
+  public static List<Passagem> listarPassagens(int cliente_id){
     
-    String sql = "SELECT * FROM passagem";
+    String sql = "SELECT * FROM passagem WHERE cliente_id = ?";
     Connection conn = null;
     PreparedStatement pstm = null;
     ResultSet rset = null;
@@ -122,6 +126,7 @@ public class PassagemDAO {
     try {
       conn = ConnectionFactory.createConnectionToMySQL();
       pstm = (PreparedStatement) conn.prepareStatement(sql);
+      pstm.setInt(1, cliente_id);
       
       rset = pstm.executeQuery();
 
@@ -132,6 +137,9 @@ public class PassagemDAO {
         passagem.setDestino(rset.getString("Destino"));
         passagem.setOrigem(rset.getString("Origem"));
         passagem.setPassagemId(rset.getInt("passagem_id"));
+        passagem.setStatus_compra(rset.getString("Status_compra"));
+        passagem.setData_compra(rset.getDate("Data_compra"));
+        passagem.setCliente_id(rset.getInt("cliente_id"));
         passagens.add(passagem);
       }
 
@@ -154,4 +162,4 @@ public class PassagemDAO {
     return passagens;
   
   }
-}
+  }
