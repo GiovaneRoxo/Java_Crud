@@ -7,7 +7,9 @@ import java.sql.ResultSet;
 import br.com.agencia.factory.ConnectionFactory;
 
 public class AdmDAO {
-  	 	// metodo para validar admin
+
+// AUTENTICAÇAO
+  	// metodo para validar admin
 	public static boolean validarAdmin(String login, String senha) {
 		
 		String sql = "SELECT * FROM agencia.adm WHERE usuario = ? AND Senha = ? ;";
@@ -50,7 +52,9 @@ public class AdmDAO {
 		}
 		return false;
 	}
-		// metodo para cadastrar admin
+		
+// CREATE
+	// metodo para cadastrar admin
 	public static void cadastrarAdmin(String login, String senha) {
 		
 		String sql = "INSERT INTO agencia.adm (usuario, senha) VALUES (?, ?);";
@@ -85,75 +89,8 @@ public class AdmDAO {
 			}
 		}
 	}
-		// metodo para deletar admin
-	public static void deletarAdmin(String senha) {
-		
-		String sql = "DELETE FROM agencia.adm WHERE senha = ? ;";
-		
-		Connection conn = null;
-		PreparedStatement pstm = null;
-		
-		try {
-			conn = ConnectionFactory.createConnectionToMySQL();
-			
-			pstm = (PreparedStatement) conn.prepareStatement(sql);
-			
-			pstm.setString(1, senha);
-			
-			pstm.execute();
-			System.out.println("Administrador deletado com sucesso!!");
-			
-		}catch (Exception e) {
-			e.printStackTrace();
-			System.out.println("Erro ao deletar administrador!!");
-		}finally {
-			try {
-				if(pstm!=null) {
-					pstm.close();
-				}
-				if(conn!=null) {
-					conn.close();
-				}
-			}catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
-	}
-		// metodo para atualizar senha do admin
-	public static void updateSenhaAdm(String senha, String login) {
-
-    String sql = "UPDATE agencia.adm SET senha = ? WHERE usuario = ? ;";
-    
-    Connection conn = null;
-    PreparedStatement pstm = null;
-    
-    try {
-      conn = ConnectionFactory.createConnectionToMySQL();
-      
-      pstm = (PreparedStatement) conn.prepareStatement(sql);
-      
-      pstm.setString(1, senha);
-      pstm.setString(2, login);
-      
-      pstm.execute();
-      System.out.println("Senha atualizada com sucesso!!");
-      
-    }catch (Exception e) {
-      e.printStackTrace();
-      System.out.println("Erro ao atualizar senha!!");
-    }finally {
-      try {
-        if(pstm!=null) {
-          pstm.close();
-        }
-        if(conn!=null) {
-          conn.close();
-        }
-      }catch (Exception e) {
-        e.printStackTrace();
-      }
-    }
-  }
+	
+// READ
 		// metodo para listar administradores
 	public static void listarAdmins(){
 
@@ -196,6 +133,79 @@ public class AdmDAO {
 			}
 		}
 	}
+	
+// UPDATE
+		// metodo para atualizar senha do admin
+	public static void updateSenhaAdm(String senha, String login) {
+
+			String sql = "UPDATE agencia.adm SET senha = ? WHERE usuario = ? ;";
+			
+			Connection conn = null;
+			PreparedStatement pstm = null;
+			
+			try {
+				conn = ConnectionFactory.createConnectionToMySQL();
+				
+				pstm = (PreparedStatement) conn.prepareStatement(sql);
+				
+				pstm.setString(1, senha);
+				pstm.setString(2, login);
+				
+				pstm.execute();
+				System.out.println("Senha atualizada com sucesso!!");
+				
+			}catch (Exception e) {
+				e.printStackTrace();
+				System.out.println("Erro ao atualizar senha!!");
+			}finally {
+				try {
+					if(pstm!=null) {
+						pstm.close();
+					}
+					if(conn!=null) {
+						conn.close();
+					}
+				}catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		}
+	
+// DELETE	
+	// metodo para deletar admin
+	public static void deletarAdmin(String senha) {
+		
+		String sql = "DELETE FROM agencia.adm WHERE senha = ? ;";
+		
+		Connection conn = null;
+		PreparedStatement pstm = null;
+		
+		try {
+			conn = ConnectionFactory.createConnectionToMySQL();
+			
+			pstm = (PreparedStatement) conn.prepareStatement(sql);
+			
+			pstm.setString(1, senha);
+			
+			pstm.execute();
+			System.out.println("Administrador deletado com sucesso!!");
+			
+		}catch (Exception e) {
+			e.printStackTrace();
+			System.out.println("Erro ao deletar administrador!!");
+		}finally {
+			try {
+				if(pstm!=null) {
+					pstm.close();
+				}
+				if(conn!=null) {
+					conn.close();
+				}
+			}catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
 	}
+}
 
 

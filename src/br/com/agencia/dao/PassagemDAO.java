@@ -12,6 +12,7 @@ import br.com.agencia.model.Passagem;
 
 public class PassagemDAO {
 
+// CREATE
     // metodo para inserir uma passagem no banco de dados
   public static void inserir(Passagem passagem) {
 
@@ -54,65 +55,8 @@ public class PassagemDAO {
       }
     }
   }
-    // metodo para deletar uma passagem no banco de dados
-  public static void deletarPassagem(int passagem_id){
-    String sql = "DELETE * FROM passagem WHERE passagem_id = ?";
-    Connection conn = null;
-    PreparedStatement pstm = null;
-    
-    try {
-      conn = ConnectionFactory.createConnectionToMySQL();
-      pstm = (PreparedStatement) conn.prepareStatement(sql);
-      pstm.setInt(1, passagem_id);
-      pstm.execute();
-      System.out.println("Passagem cancelada com sucesso!");
-    }catch (Exception e) {
-      e.printStackTrace();
-    }finally {
-      try {
-        if(pstm!=null) {
-          pstm.close();
-        }
-        if(conn!=null) {
-          conn.close();
-        }
-      }catch (Exception e) {
-        e.printStackTrace();
-      }
-    }
-  } 
-    // metodo para atualizar uma passagem no banco de dados
-  public static void atualizarPassagem(Passagem passagem){
-    String sql = "UPDATE passagem SET Dia_viagem = ?, mes_viagem = ?, Ano_viagem = ?, Destino = ?, Origem = ? WHERE passagem_id = ?";
-    Connection conn = null;
-    PreparedStatement pstm = null;
-    
-    try {
-      conn = ConnectionFactory.createConnectionToMySQL();
-      pstm = (PreparedStatement) conn.prepareStatement(sql);
-      pstm.setInt(1, passagem.getDiaViagem());
-      pstm.setInt(2, passagem.getMesViagem());
-      pstm.setInt(3, passagem.getAnoViagem());
-      pstm.setString(4, passagem.getDestino());
-      pstm.setString(5, passagem.getOrigem());
-      pstm.setInt(6, passagem.getPassagemId());
-      pstm.execute();
-      System.out.println("Passagem atualizada com sucesso!");
-    }catch (Exception e) {
-      e.printStackTrace();
-    }finally {
-      try {
-        if(pstm!=null) {
-          pstm.close();
-        }
-        if(conn!=null) {
-          conn.close();
-        }
-      }catch (Exception e) {
-        e.printStackTrace();
-      }
-    }
-  }
+
+// READ
     // metodo para listar passagens de um determinado cliente no banco de dados
   public static List<Passagem> listarPassagensById(int cliente_id){
     
@@ -210,4 +154,70 @@ public class PassagemDAO {
       return passagens;
     
     }
+ 
+// UPDATE
+    // metodo para atualizar uma passagem no banco de dados
+  public static void atualizarPassagem(Passagem passagem, int id){
+        String sql = "UPDATE passagem SET Dia_viagem = ?, mes_viagem = ?, Ano_viagem = ?, Status_compra = ?, Data_compra = ?, cliente_id = ? WHERE passagem_id = ?";
+        Connection conn = null;
+        PreparedStatement pstm = null;
+        
+        try {
+          conn = ConnectionFactory.createConnectionToMySQL();
+          pstm = (PreparedStatement) conn.prepareStatement(sql);
+          pstm.setInt(1, passagem.getDiaViagem());
+          pstm.setInt(2, passagem.getMesViagem());
+          pstm.setInt(3, passagem.getAnoViagem());
+          pstm.setString(4, passagem.getStatus_compra());
+          pstm.setDate(5, new Date(passagem.getData_compra().getTime()));
+          pstm.setInt(6, passagem.getCliente_id());
+          pstm.setInt(7, id);
+          pstm.execute();
+          System.out.println("Passagem atualizada com sucesso!");
+        }catch (Exception e) {
+          e.printStackTrace();
+        }finally {
+          try {
+            if(pstm!=null) {
+              pstm.close();
+            }
+            if(conn!=null) {
+              conn.close();
+            }
+          }catch (Exception e) {
+            e.printStackTrace();
+          }
+        }
+      }
+ 
+// DELETE
+    // metodo para deletar uma passagem no banco de dados
+  public static void deletarPassagem(int passagem_id, int id_cliente){
+    String sql = "DELETE FROM passagem WHERE passagem_id = ? AND cliente_id = ?";
+    Connection conn = null;
+    PreparedStatement pstm = null;
+    
+    try {
+      conn = ConnectionFactory.createConnectionToMySQL();
+      pstm = (PreparedStatement) conn.prepareStatement(sql);
+      pstm.setInt(1, passagem_id);
+      pstm.setInt(2, id_cliente);
+      pstm.execute();
+      
+    }catch (Exception e) {
+      e.printStackTrace();
+    }finally {
+      try {
+        if(pstm!=null) {
+          pstm.close();
+        }
+        if(conn!=null) {
+          conn.close();
+        }
+      }catch (Exception e) {
+        e.printStackTrace();
+      }
+    }
+  } 
+
 }

@@ -44,9 +44,9 @@ public class Main {
 							System.out.println("------------------------");
 							System.out.println("------BEM-VINDO(A)------");
 							System.out.println("------------------------");
-							System.out.println("1 - Listar passagens");
-							System.out.println("2 - Comprar passagens");
-							System.out.println("3 - Alterar passagem");
+							System.out.println("1 - Listar passagens disponiveis");
+							System.out.println("2 - Listar minhas passagens");
+							System.out.println("3 - Comprar passagens");
 							System.out.println("4 - Cancelar passagens");
 							System.out.println("5 - Deletar conta");
 							System.out.println("6 - Alterar dados");
@@ -54,6 +54,21 @@ public class Main {
 							opcc = ler.nextInt();
 							switch(opcc) {
 								case 1:
+										System.out.println("------------------------");
+										System.out.println("-----LISTAR-PASSAGENS---");
+										System.out.println("------------------------");
+										for(Passagem p : PassagemDAO.listarPassagensById(0)) {
+											System.out.println("--------------------------------------------");
+											System.out.println("--------------------------------------------");
+											System.out.println("ID DA PASSAGEM: " + p.getPassagemId());
+											System.out.println("DATA DA VIAGEM: você decide ");
+											System.out.println("ORIGEM: " + p.getOrigem());
+											System.out.println("DESTINO: " + p.getDestino());
+											System.out.println("--------------------------------------------");
+											System.out.println("--------------------------------------------");
+										}
+									break;	
+								case 2:
 										System.out.println("------------------------");
 										System.out.println("-----LISTAR-PASSAGENS---");
 										System.out.println("------------------------");
@@ -68,54 +83,32 @@ public class Main {
 											System.out.println("--------------------------------------------");
 											System.out.println("--------------------------------------------");
 										}
-									break;	
-
-								case 2:
-										System.out.println("------------------------");
-										System.out.println("-----COMPRAR-PASSAGEM---");
-										System.out.println("------------------------");
-										System.out.println("Digite o dia da viagem: ");
-										int dia_Viagem = ler.nextInt();
-										System.out.println("Digite o mes da viagem: ");
-										int mes_Viagem = ler.nextInt();
-										System.out.println("Digite o ano da viagem: ");
-										int ano_Viagem = ler.nextInt();
-										System.out.println("Digite a origem (Cidade/Estado/País): ");
-										ler.nextLine();
-										String origem = ler.nextLine();
-										System.out.println("Digite o destino (Cidade/Estado/País): ");
-										String destino = ler.nextLine();
-										Passagem passagem = new Passagem();
-										passagem.setDataViagem(dia_Viagem, mes_Viagem, ano_Viagem);
-										passagem.setOrigem(origem);
-										passagem.setDestino(destino);
-										passagem.setCliente_id(ClienteDAO.getIdByUsuario(usuario));
-										passagem.setStatus_compra("Aguardando pagamento");
-										passagem.setData_compra(new Date());
-										PassagemDAO.inserir(passagem);
 									break;
 								case 3:
 										System.out.println("------------------------");
-										System.out.println("-----ALTERAR-PASSAGEM---");
+										System.out.println("-----COMPRAR-PASSAGEM---");
 										System.out.println("------------------------");
+										System.out.println("volte ao meno e selecione `1` para listar as passagens");
+										System.out.println("Digite o ID da passagem desejada: ");
+										int idPassagem = ler.nextInt();
 										System.out.println("Digite o dia da viagem: ");
-										int dia_Viagem2 = ler.nextInt();
+										int diaViagem = ler.nextInt();
 										System.out.println("Digite o mes da viagem: ");
-										int mes_Viagem2 = ler.nextInt();
+										int mesViagem = ler.nextInt();
 										System.out.println("Digite o ano da viagem: ");
-										int ano_Viagem2 = ler.nextInt();
-										System.out.println("Digite a origem (Cidade/Estado/País): ");
-										ler.nextLine();
-										String origem2 = ler.nextLine();
-										System.out.println("Digite o destino (Cidade/Estado/País): ");
-										String destino2 = ler.nextLine();
-										Passagem passagem2 = new Passagem();
-										passagem2.setDataViagem(dia_Viagem2, mes_Viagem2, ano_Viagem2);
-										passagem2.setOrigem(origem2);
-										passagem2.setDestino(destino2);
-										passagem2.setCliente_id(ClienteDAO.getIdByUsuario(usuario));
-										passagem2.setStatus_compra("Aguardando pagamento");
-										PassagemDAO.atualizarPassagem(passagem2);
+										int anoViagem = ler.nextInt();
+										System.out.println("Digite sua senha: ");
+										String senhaCompra = ler.next();
+										if(ClienteDAO.validaSenha(senhaCompra)){
+											Passagem comprada = new Passagem();
+											comprada.setDataViagem(diaViagem, mesViagem, anoViagem);
+											comprada.setCliente_id(ClienteDAO.getIdByUsuario(usuario));
+											comprada.setData_compra(new Date());
+											comprada.setStatus_compra("Aguardando pagamento");	
+											PassagemDAO.atualizarPassagem(comprada, idPassagem);;
+										}else {
+											System.out.println("ERRO: Senha incorreta");
+										}
 									break;
 								case 4:
 										System.out.println("------------------------");
@@ -127,9 +120,9 @@ public class Main {
 										String pass = ler.next();
 										String test = ClienteDAO.login(user, pass);
 										if(test != null) {
-											System.out.println("Digite o id da passagem: ");
+											System.out.println("Digite o id da sua passagem que deseja cancelar: ");
 											int id_passagem = ler.nextInt();
-											PassagemDAO.deletarPassagem(id_passagem);
+											PassagemDAO.deletarPassagem(id_passagem, ClienteDAO.getIdByUsuario(user));
 										}else{
 											System.out.println("Usuario ou senha incorretos!");
 										}
@@ -148,84 +141,84 @@ public class Main {
 										}
 									break;
 								case 6:
-									int id_atual = ClienteDAO.getIdByUsuario(usuario);
-									System.out.println("------------------------");
-									System.out.println("---------DADOS----------");
-									System.out.println("------------------------");
-									System.out.println("QUAL DADO DESEJA ALTERAR?");
-									System.out.println("1 - Nome");
-									System.out.println("2 - Sobrenome");
-									System.out.println("3 - Idade");
-									System.out.println("4 - Usuario");
-									System.out.println("5 - Senha");
-									System.out.println("6 - Sair");
-									opcc = ler.nextInt();
-									switch(opcc) {
-										case 1:
-												System.out.println("Digite sua senha: ");
-												String senhaTest2 = ler.next();
-												if(ClienteDAO.validaSenha(senhaTest2) == true){
-													System.out.println("Digite o novo nome: ");
-													String nome = ler.next();
-													ClienteDAO.updateNome(nome, id_atual);
-												}else{
-													System.out.println("Senha incorreta");
-												}
-											break;
-										case 2:
-												System.out.println("Digite sua senha: ");
-												String senhaTest3 = ler.next();
-												if(ClienteDAO.validaSenha(senhaTest3) == true){
-													System.out.println("Digite o seu sobrenome do meio (sem espaço): ");
-													String nome_meio = ler.next();
-													System.out.println("Digite o seu ultimo sobrenome (sem espaço): ");
-													String nome_final = ler.next();
-													ClienteDAO.updateSobrenome(nome_meio, nome_final, id_atual);
-												}
-											break;
-										case 3:
-												System.out.println("Digite sua senha: ");
-												String senhaTest4 = ler.next();
-												if(ClienteDAO.validaSenha(senhaTest4) == true){
-													System.out.println("Digite a sua idade: ");
-													int idade = ler.nextInt();
-													ClienteDAO.updateIdade(idade, id_atual);
-												}else{
-													System.out.println("Senha incorreta");
-												}
-											break;
-										case 4:
-												System.out.println("Digite sua senha: ");
-												String senhaTest5 = ler.next();
-												if(ClienteDAO.validaSenha(senhaTest5) == true){
-													System.out.println("Digite o novo usuario: ");
-													String novo_usuario = ler.next();
-													if(ClienteDAO.validaUsuarios(novo_usuario) == false){
-														ClienteDAO.updateUsuario(novo_usuario, id_atual);
+										int id_atual = ClienteDAO.getIdByUsuario(usuario);
+										System.out.println("------------------------");
+										System.out.println("---------DADOS----------");
+										System.out.println("------------------------");
+										System.out.println("QUAL DADO DESEJA ALTERAR?");
+										System.out.println("1 - Nome");
+										System.out.println("2 - Sobrenome");
+										System.out.println("3 - Idade");
+										System.out.println("4 - Usuario");
+										System.out.println("5 - Senha");
+										System.out.println("6 - Sair");
+										opcc = ler.nextInt();
+										switch(opcc) {
+											case 1:
+													System.out.println("Digite sua senha: ");
+													String senhaTest2 = ler.next();
+													if(ClienteDAO.validaSenha(senhaTest2) == true){
+														System.out.println("Digite o novo nome: ");
+														String nome = ler.next();
+														ClienteDAO.updateNome(nome, id_atual);
 													}else{
-														System.out.println("Usuario indisponivel");
-													}	
-												}else{
+														System.out.println("Senha incorreta");
+													}
+												break;
+											case 2:
+													System.out.println("Digite sua senha: ");
+													String senhaTest3 = ler.next();
+													if(ClienteDAO.validaSenha(senhaTest3) == true){
+														System.out.println("Digite o seu sobrenome do meio (sem espaço): ");
+														String nome_meio = ler.next();
+														System.out.println("Digite o seu ultimo sobrenome (sem espaço): ");
+														String nome_final = ler.next();
+														ClienteDAO.updateSobrenome(nome_meio, nome_final, id_atual);
+													}
+												break;
+											case 3:
+													System.out.println("Digite sua senha: ");
+													String senhaTest4 = ler.next();
+													if(ClienteDAO.validaSenha(senhaTest4) == true){
+														System.out.println("Digite a sua idade: ");
+														int idade = ler.nextInt();
+														ClienteDAO.updateIdade(idade, id_atual);
+													}else{
+														System.out.println("Senha incorreta");
+													}
+												break;
+											case 4:
+													System.out.println("Digite sua senha: ");
+													String senhaTest5 = ler.next();
+													if(ClienteDAO.validaSenha(senhaTest5) == true){
+														System.out.println("Digite o novo usuario: ");
+														String novo_usuario = ler.next();
+														if(ClienteDAO.validaUsuarios(novo_usuario) == false){
+															ClienteDAO.updateUsuario(novo_usuario, id_atual);
+														}else{
+															System.out.println("Usuario indisponivel");
+														}	
+													}else{
+														System.out.println("Senha incorreta");
+													}
+												break;
+											case 5:
+													System.out.println("------------------------");
+													System.out.println("---------SENHA----------");
+													System.out.println("------------------------");
+													System.out.println("Digite a antiga senha: ");
+													String antiga = ler.next();
+													if(ClienteDAO.validaSenha(antiga) == true){
+														System.out.println("Digite a nova senha: ");
+														String nova = ler.next();
+														ClienteDAO.updateSenha(nova, antiga);
+													}else{
 													System.out.println("Senha incorreta");
-												}
-											break;
-										case 5:
-												System.out.println("------------------------");
-												System.out.println("---------SENHA----------");
-												System.out.println("------------------------");
-												System.out.println("Digite a antiga senha: ");
-												String antiga = ler.next();
-												if(ClienteDAO.validaSenha(antiga) == true){
-													System.out.println("Digite a nova senha: ");
-													String nova = ler.next();
-													ClienteDAO.updateSenha(nova, antiga);
-												}else{
-												System.out.println("Senha incorreta");
-												}
-											break;
-										case 6:
-											break;											
-									}
+													}
+												break;
+											case 6:
+												break;											
+										}
 									break;
 								case 7:
 									  loop = false;
@@ -292,10 +285,12 @@ public class Main {
 							System.out.println("-----------ADM----------");
 							System.out.println("------------------------");
 							System.out.println("1 - Listar clientes");
-							System.out.println("2 - Cadastrar administrador");
-							System.out.println("3 - Deletar administrador");
-							System.out.println("4 - atualizar senha do administrador");
-							System.out.println("5 - Sair");
+							System.out.println("2 - Listar passagens");
+							System.out.println("3 - Adicionar passagens");
+							System.out.println("4 - Cadastrar administrador");
+							System.out.println("5 - Deletar administrador");
+							System.out.println("6 - atualizar senha do administrador");
+							System.out.println("7 - Sair");
 							int opcao2 = ler.nextInt();
 							switch(opcao2){
 								case 1:
@@ -311,13 +306,53 @@ public class Main {
 										}
 									break;
 								case 2:
+										System.out.println("------------------------");
+										System.out.println("-----LISTAR-PASSAGENS---");
+										System.out.println("------------------------");
+										for(Passagem p : PassagemDAO.listarPassagens()) {
+											System.out.println("--------------------------------------------");
+											System.out.println("--------------------------------------------");
+											System.out.println("ID DA PASSAGEM: " + p.getPassagemId());
+											System.out.println("DATA DA VIAGEM: " + p.getDiaViagem() + "/" + p.getMesViagem() + "/" + p.getAnoViagem());
+											System.out.println("DATA DA COMPRA: " + p.getData_compra());
+											System.out.println("ORIGEM: " + p.getOrigem());
+											System.out.println("DESTINO: " + p.getDestino());
+											System.out.println("--------------------------------------------");
+											System.out.println("--------------------------------------------");
+										}
+									break;
+								case 3:
+										System.out.println("------------------------");
+										System.out.println("---ADICIONAR-PASSAGEM---");
+										System.out.println("------------------------");
+										System.out.println("Digite o dia da viagem: ");
+										int dia_Viagem = ler.nextInt();
+										System.out.println("Digite o mes da viagem: ");
+										int mes_Viagem = ler.nextInt();
+										System.out.println("Digite o ano da viagem: ");
+										int ano_Viagem = ler.nextInt();
+										System.out.println("Digite a origem (Cidade/Estado/País): ");
+										ler.nextLine();
+										String origem = ler.nextLine();
+										System.out.println("Digite o destino (Cidade/Estado/País): ");
+										String destino = ler.nextLine();
+										Passagem passagem = new Passagem();
+										passagem.setDataViagem(dia_Viagem, mes_Viagem, ano_Viagem);
+										passagem.setOrigem(origem);
+										passagem.setDestino(destino);
+										passagem.setCliente_id(0);
+										passagem.setStatus_compra("Disponivel");
+										passagem.setData_compra(new Date());
+										PassagemDAO.inserir(passagem);
+									break;
+								case 4:
 									System.out.println("Digite o usuario do administrador: ");
 									String usuarioAdm = ler.next();
 									System.out.println("Digite a senha do administrador: ");
 									String senhaAdm = ler.next();
 									AdmDAO.cadastrarAdmin(usuarioAdm, senhaAdm);
 									break;
-								case 3:
+								case 5:
 										System.out.println("Digite o usuario do administrador: ");
 										String usuarioAdm2 = ler.next();
 										System.out.println("Digite a senha do administrador: ");
@@ -328,14 +363,14 @@ public class Main {
 											System.out.println("Usuario ou senha invalidos");
 										}
 									break;
-								case 4:
+								case 6:
 									System.out.println("Digite o usuario do administrador: ");
 									String usuarioAdm3 = ler.next();
 									System.out.println("Digite a nova senha: ");
 									String senhaAdm3 = ler.next();
 									AdmDAO.updateSenhaAdm(usuarioAdm3, senhaAdm3);
 									break;
-								case 5:
+								case 7:
 										loop3 = false;
 									break;
 							}
