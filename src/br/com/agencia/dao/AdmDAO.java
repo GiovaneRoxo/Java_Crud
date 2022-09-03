@@ -154,5 +154,48 @@ public class AdmDAO {
       }
     }
   }
-} 
+		// metodo para listar administradores
+	public static void listarAdmins(){
+
+		String sql = "SELECT * FROM agencia.adm;";
+		
+		Connection conn = null;
+		PreparedStatement pstm = null;
+		ResultSet rset = null;
+		
+		try {
+			conn = ConnectionFactory.createConnectionToMySQL();
+			
+			pstm = (PreparedStatement) conn.prepareStatement(sql);
+			
+			rset = pstm.executeQuery();
+			
+			while(rset.next()) {
+				System.out.println("------------------------------------------------");
+				System.out.println("ID do adm: " + rset.getString("idadm"));
+				System.out.println("Usuario: " + rset.getString("usuario"));
+				System.out.println("------------------------------------------------");
+			}
+			
+		}catch (Exception e) {
+			e.printStackTrace();
+			System.out.println("Erro ao listar administradores!!");
+		}finally {
+			try {
+				if(rset!=null) {
+					rset.close();
+				}
+				if(pstm!=null) {
+					pstm.close();
+				}
+				if(conn!=null) {
+					conn.close();
+				}
+			}catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	}
+
 

@@ -57,7 +57,7 @@ public class Main {
 										System.out.println("------------------------");
 										System.out.println("-----LISTAR-PASSAGENS---");
 										System.out.println("------------------------");
-										for(Passagem p : PassagemDAO.listarPassagens(ClienteDAO.getIdByUsuario(usuario))) {
+										for(Passagem p : PassagemDAO.listarPassagensById(ClienteDAO.getIdByUsuario(usuario))) {
 											System.out.println("--------------------------------------------");
 											System.out.println("--------------------------------------------");
 											System.out.println("ID DA PASSAGEM: " + p.getPassagemId());

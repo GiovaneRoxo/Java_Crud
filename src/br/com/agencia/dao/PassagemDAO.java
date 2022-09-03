@@ -113,8 +113,8 @@ public class PassagemDAO {
       }
     }
   }
-    // metodo para listar passagens no banco de dados
-  public static List<Passagem> listarPassagens(int cliente_id){
+    // metodo para listar passagens de um determinado cliente no banco de dados
+  public static List<Passagem> listarPassagensById(int cliente_id){
     
     String sql = "SELECT * FROM passagem WHERE cliente_id = ?";
     Connection conn = null;
@@ -162,4 +162,52 @@ public class PassagemDAO {
     return passagens;
   
   }
-  }
+    // metodo lista todas as passagens no banco de dados
+  public static List<Passagem> listarPassagens(){
+    
+      String sql = "SELECT * FROM passagem";
+      Connection conn = null;
+      PreparedStatement pstm = null;
+      ResultSet rset = null;
+  
+      List<Passagem> passagens = new ArrayList<Passagem>();
+      
+      try {
+        conn = ConnectionFactory.createConnectionToMySQL();
+        pstm = (PreparedStatement) conn.prepareStatement(sql);
+        
+        rset = pstm.executeQuery();
+  
+        while(rset.next()) {
+          Passagem passagem = new Passagem();
+            
+          passagem.setDataViagem(rset.getInt("Dia_viagem"),rset.getInt("Mes_viagem"),rset.getInt("Ano_viagem"));
+          passagem.setDestino(rset.getString("Destino"));
+          passagem.setOrigem(rset.getString("Origem"));
+          passagem.setPassagemId(rset.getInt("passagem_id"));
+          passagem.setStatus_compra(rset.getString("Status_compra"));
+          passagem.setData_compra(rset.getDate("Data_compra"));
+          passagem.setCliente_id(rset.getInt("cliente_id"));
+          passagens.add(passagem);
+        }
+  
+  
+        System.out.println("Passagens listadas com sucesso!");
+      }catch (Exception e) {
+        e.printStackTrace();
+      }finally {
+        try {
+          if(pstm!=null) {
+            pstm.close();
+          }
+          if(conn!=null) {
+            conn.close();
+          }
+        }catch (Exception e) {
+          e.printStackTrace();
+        }
+      }
+      return passagens;
+    
+    }
+}
