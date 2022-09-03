@@ -316,7 +316,7 @@ public class ClienteDAO {
 
 	// SEGURANÇA
 		// metodo para autenticar cliente na tela de login
-	public static String login(String login, String senha) {
+	public static boolean login(String login, String senha) {
 
 			Connection conn = null;
 			PreparedStatement pstm = null;
@@ -326,17 +326,18 @@ public class ClienteDAO {
 			try {
 				conn = ConnectionFactory.createConnectionToMySQL();
 
-				String sql = "SELECT Usuario FROM agencia.clientes WHERE Usuario = ? AND Senha = ? ;";
+				String sql = "SELECT * FROM agencia.clientes WHERE Usuario = ? AND Senha = ? ;";
 
 				pstm = conn.prepareStatement(sql);	
 				pstm.setString(1, login);
 				pstm.setString(2, senha);	
 				rset = pstm.executeQuery();		
-				return rset.next() ? rset.getString("Usuario") : null;
+				
+				return rset.next() ? true : false;
 
 			}catch (Exception e) {
 				e.printStackTrace();
-				return null;
+				return false;
 			}finally {
 				try {
 					if(rset!=null) {

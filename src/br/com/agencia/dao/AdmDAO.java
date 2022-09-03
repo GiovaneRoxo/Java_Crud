@@ -25,7 +25,6 @@ public class AdmDAO {
 			
 			pstm.setString(1, login);
 			pstm.setString(2, senha);
-			
 			rset = pstm.executeQuery();
 			
 			if(rset.next()) {

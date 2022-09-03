@@ -38,8 +38,7 @@ public class Main {
 					String usuario = ler.next();
 					System.out.println("Digite a senha: ");
 					String senha = ler.next();
-					String login = ClienteDAO.login(usuario, senha);
-					if(login != null) {
+					if(ClienteDAO.login(usuario, senha) != false) {
 						while(sair == true) {
 							System.out.println("------------------------");
 							System.out.println("------BEM-VINDO(A)------");
@@ -118,8 +117,8 @@ public class Main {
 										String user = ler.next();
 										System.out.println("Digite a senha: ");
 										String pass = ler.next();
-										String test = ClienteDAO.login(user, pass);
-										if(test != null) {
+										Boolean test = ClienteDAO.login(user, pass);
+										if(test != false) {
 											System.out.println("Digite o id da sua passagem que deseja cancelar: ");
 											int id_passagem = ler.nextInt();
 											PassagemDAO.deletarPassagem(id_passagem, ClienteDAO.getIdByUsuario(user));
@@ -217,12 +216,18 @@ public class Main {
 													}
 												break;
 											case 6:
-												break;											
+												break;	
+											default:
+													System.out.println("Opcao invalida");
+												break;									
 										}
 									break;
 								case 7:
 									  loop = false;
 										sair = false;
+									break;
+								default:
+										System.out.println("Opcao invalida");
 									break;
 							}
 						}
@@ -381,6 +386,9 @@ public class Main {
 				break;
 		  case 4:
 					loop = false;
+				break;
+			default:
+					System.out.println("Opcao invalida");
 				break;   
 	  }
 	}ler.close();
