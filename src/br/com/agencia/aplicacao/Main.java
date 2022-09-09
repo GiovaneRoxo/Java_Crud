@@ -358,7 +358,7 @@ public class Main {
 									AdmDAO.cadastrarAdmin(usuarioAdm, senhaAdm);
 									break;
 								case 5:
-										System.out.println("Digite o usuario do administrador: ");
+									  System.out.println("Digite o usuario do administrador: ");
 										String usuarioAdm2 = ler.next();
 										System.out.println("Digite a senha do administrador: ");
 										String senhaAdm2 = ler.next();
